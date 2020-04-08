@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -19,13 +20,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    //protected $redirectTo = '/admin/home';
 
     /**
      * Create a new controller instance.
@@ -36,4 +36,21 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function redirectTo(){
+        
+        $role = Auth::user()->roles->first()->pivot->role_id;
+        switch ($role) {
+            case '2':
+                    return '/admin/home';
+                break;
+            case '3':
+                    return '/';
+                break; 
+            default:
+                    return '/'; 
+                break;
+        }
+    }
+
 }
