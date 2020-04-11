@@ -51,9 +51,10 @@ class TagController extends Controller
         return redirect(route('admin.tags'))->with('status','Tag updated!');
     }
 
-    public function delete($tag)
-    {
-        Tag::destroy($tag);
+    public function delete(request $request)
+    {   
+        $tag = Tag::where('id',$request->tag_id)->firstOrFail();
+        Tag::destroy($tag->id);
         return redirect(route('admin.tags'))->with('status','Tag deleted!');
     }
 

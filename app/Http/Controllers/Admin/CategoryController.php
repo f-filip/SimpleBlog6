@@ -39,7 +39,10 @@ class CategoryController extends Controller
 
     public function update(category $category, request $request)
     {
-       
+        if($this->restrictedCategory($category->id)){
+            return redirect(route('admin.category'))->with('alert','Category cannot be changed');
+        }
+         
         $validator = Validator::make($request->all(),[
             'name' =>'required|unique:category,name'
         ]);
@@ -56,10 +59,24 @@ class CategoryController extends Controller
         return redirect(route('admin.category'))->with('status','Category updated!');
     }
 
-    public function delete($category)
+    public function restrictedCategory(string $category_id){
+        if($category_id === '17'){
+            return true;
+        }
+
+        return false;
+        
+    }
+
+    public function delete(request $request)
     {   
-        $post = Post::where('category_id', $category)->update(['category_id' => 5]);
-        Category::destroy($category);
+        
+        if($this->restrictedCategory($request->category_id)){
+            return redirect(route('admin.category'))->with('alert','Category cannot be changed');
+        }
+
+        $post = Post::where('category_id', $request->category_id)->update(['category_id' => 12]);
+        Category::destroy($request->category_id);
         return redirect(route('admin.category'))->with('status','Category deleted!');
         
     }

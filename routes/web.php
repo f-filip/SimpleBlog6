@@ -37,20 +37,20 @@ Route::group([
     Route::get('/admin/tags','admin\TagController@index')->name('admin.tags');
     Route::put('/admin/tags/update/{tag}','admin\TagController@update')->name('admin.tag.update');
     Route::put('/admin/tags/store','admin\TagController@store')->name('admin.tag.store');
-    Route::delete('/admin/tag/delete/{tag}','admin\tagController@delete')->name('admin.tag.delete');
+    Route::delete('/admin/tag/delete','admin\TagController@delete')->name('admin.tag.delete');
 
     //admin categories
     Route::get('/admin/category','admin\CategoryController@index')->name('admin.category');
-    Route::put('/admin/category/update/{category}','admin\categoryController@update')->name('admin.category.update');
-    Route::put('/admin/category/store','admin\categoryController@store')->name('admin.category.store');
-    Route::delete('/admin/category/delete/{category}','admin\categoryController@delete')->name('admin.category.delete');
+    Route::put('/admin/category/update/{category}','admin\CategoryController@update')->name('admin.category.update');
+    Route::put('/admin/category/store','admin\CategoryController@store')->name('admin.category.store');
+    Route::delete('/admin/category/delete','admin\CategoryController@delete')->name('admin.category.delete');
 
     //admin users
     Route::get('/admin/user','admin\UserController@index')->name('admin.user');
     Route::put('/admin/user/update','admin\UserController@userUpdate')->name('admin.user.update');
     Route::get('/admin/role','admin\UserController@userRole')->name('admin.user.role');
     Route::put('/admin/role/update/{user}','admin\UserController@userRoleUpdate')->name('admin.role.update');
-    Route::delete('/admin/user/delete/{user}','admin\UserController@deleteUser')->name('admin.user.delete');
+    Route::delete('/admin/user/delete','admin\UserController@deleteUser')->name('admin.user.delete');
 
 }); 
 

@@ -41,7 +41,7 @@
               <td><button class="btn btn-primary" data-toggle="modal" data-target='#detailModal'
                  data-name="{{$user->name}}" data-email="{{$user->email}}" data-user_id="{{$user->id}}" data-user_role="{{$user->roles->first()->name}}">Show/Edit</button></td>
               <td>
-                <button class="btn btn-danger remove-record" value="delete" data-toggle="modal" data-target="#deleteModal" data-url="{!! route('admin.user.delete', $user) !!}" data-id="{{$user->id}}">Delete</button>
+                <button class="btn btn-danger remove-record" value="delete" data-toggle="modal" data-user_id="{{$user->id}}" data-target="#deleteModal" data-url="{!! route('admin.user.delete', $user) !!}" data-id="{{$user->id}}">Delete</button>
             </td>
           </tr>
           @endforeach
@@ -54,7 +54,7 @@
 </div> <!-- /#wrapper -->
 
 <!-- Modal delete -->
-<form action="{!! route('admin.user.delete', $user) !!}" method="POST" class="remove-record-model">
+<form action="{!! route('admin.user.delete') !!}" method="POST" class="remove-record-model">
   @method('delete')
   @csrf
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,6 +67,7 @@
       </button>
     </div>
     <div class="modal-body">
+      <input type="hidden" name="user_id" name="user_id" id="user_id">
       This changes cannot be restored.
     </div>
     <div class="modal-footer">
@@ -93,7 +94,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <input type="hidden" name="user_id" name="user_id" id="user_id">
+      <input type="hidden" name="user_id" id="user_id">
       Name:<input type="text" class="form-control" name="name" id="name" >
       E-mail:<input type="email" class="form-control" name="email" id="email">
     </div>
@@ -119,6 +120,15 @@ $('#detailModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body #user_id').val(user_id)
   })
 
+</script>
+<script>
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) 
+    var user_id = button.data('user_id')  
+    var modal = $(this)
+    modal.find('.modal-body #user_id').val(user_id)
+    })
+  
 </script>
 @endsection
 

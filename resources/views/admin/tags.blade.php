@@ -48,7 +48,7 @@
                   <input name="name" type="text" class="form-control" placeholder="Change tag name" aria-label="Change tag name"aria-describedby="button-addon2" required>
                   <div class="input-group-append">
                     <button class="btn btn-outline-success" type="submit" id="button-addon2"><i class="far fa-edit"></i></button>
-                    <button class="btn btn-outline-danger remove-record" type="button" data-toggle="modal" data-target="#deleteModal"    data-url="{!! route('admin.category.delete', $tag) !!}" data-id="{{$tag->id}}" ><i class="far fa-trash-alt"></i></button>
+                    <button class="btn btn-outline-danger remove-record" type="button" data-tag_id="{{$tag->id}}" data-toggle="modal" data-target="#deleteModal"    data-url="{!! route('admin.category.delete', $tag) !!}" data-id="{{$tag->id}}" ><i class="far fa-trash-alt"></i></button>
                   </div>
                 </div>
               </form>
@@ -62,7 +62,7 @@
 </div> <!-- /#page-content-wrapper -->
 </div> <!-- /#wrapper -->
 <!-- Modal -->
-<form action="{!! route('admin.tag.delete', $tag) !!}" method="POST" class="remove-record-model">
+<form action="{!! route('admin.tag.delete') !!}" method="POST" class="remove-record-model">
   @method('delete')
   @csrf
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -75,6 +75,7 @@
       </button>
     </div>
     <div class="modal-body">
+      <input type="hidden" name="tag_id" id="tag_id">
       Tych zmian nie można cofnąć.
     </div>
     <div class="modal-footer">
@@ -86,4 +87,12 @@
 </div>
 </form>
 <!-- Modal stop -->
+<script>
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) 
+    var tag_id = button.data('tag_id')  
+    var modal = $(this)
+    modal.find('.modal-body #tag_id').val(tag_id)
+    })
+</script>
 @endsection

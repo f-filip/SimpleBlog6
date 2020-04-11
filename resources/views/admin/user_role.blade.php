@@ -5,10 +5,14 @@
       <div class="col-md-6">
         <h2 class="text-center">Roles</h2>
         @if (session('status'))
-        <div class="alert alert-success">
+          <div class="alert alert-success">
           {{ session('status') }}
-        </div>
-      @endif
+          </div>
+        @elseif(session('alert'))
+          <div class="alert alert-danger">
+          {{ session('alert') }}
+          </div>
+        @endif
       </div>
       <div class="col-md-6">
        
@@ -29,15 +33,17 @@
           <tr>
             <th scope="row">{{$user->id}}</th>
             <td>{{$user->email}}</td>
+        
             <td>
               <form method="POST" action="{{route('admin.role.update',$user)}}">
                 @csrf
                 @method('PUT')
-                    <select class="form-control" name="role" id="role">
-                      @foreach ($roles as $role)
-                        <option id="{{$role->id}}" value="{{$role->id}}">{{$role->name}}</option>
-                      @endforeach
-                    </select>
+                  <select class="form-control" name="role" id="role">
+                    @foreach ($roles as $role)
+                      <option id="$role->id" value="{{$role->id}}"
+                        {{ $user->roles->first()->name === $role->name ? "selected" : "" }}>{{$role->name}}
+                    @endforeach
+                  </select>
             </td>
             <td>
               <input type="submit" value="update" class="btn btn-primary">

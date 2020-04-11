@@ -8,7 +8,11 @@
           <div class="alert alert-success">
           {{ session('status') }}
           </div>
-      @endif
+        @elseif(session('alert'))
+        <div class="alert alert-danger">
+        {{ session('alert') }}
+        </div>
+        @endif
       @foreach ($errors->all() as $error)
         <div class='alert alert-danger'>{{ $error }}</div>
       @endforeach
@@ -50,7 +54,7 @@
                     <button class="btn btn-outline-success" type="submit" id="button-addon2"><i class="far fa-edit"></i></button>
                   </form>
                     <button class="btn btn-outline-danger remove-record" type="button" data-toggle="modal" data-target="#deleteModal" 
-                    data-url="{!! route('admin.category.delete', $category) !!}" data-id="{{$category->id}}" ><i class="far fa-trash-alt"></i></button>
+                    data-url="{!! route('admin.category.delete') !!}" data-category_id="{{$category->id}}"><i class="far fa-trash-alt"></i></button>
                   </div>
                 </div>
             </td>
@@ -65,7 +69,7 @@
 </div> <!-- /#wrapper -->
 
 <!-- Modal -->
-<form action="{!! route('admin.category.delete', $category) !!}" method="POST" class="remove-record-model">
+<form action="{!! route('admin.category.delete') !!}" method="POST" class="remove-record-model">
 @method('delete')
 @csrf
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -78,23 +82,30 @@
       </button>
     </div>
     <div class="modal-body">
+    <input type="hidden" name="category_id" id="category_id">
+
       Tych zmian nie można cofnąć.
     </div>
     <div class="modal-footer">
-
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-
-        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i> Usuń</button>
-
-
+      <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i> Usuń</button>
     </div>
   </div>
 </div>
 </div>
 </form>
 <!-- Modal stop -->
+<script>
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) 
+    var category_id = button.data('category_id')  
+    var modal = $(this)
+    modal.find('.modal-body #category_id').val(category_id)
+    })
+  
+  </script>
 @endsection
 
 @section('script')
-<script src="{{ asset('/js/custom.js') }}"></script>
+
 @endsection	
